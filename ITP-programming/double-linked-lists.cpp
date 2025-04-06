@@ -1,41 +1,30 @@
-//Создать двусвязный список, содержащий целые числа. После всех чисел, равных последнему числу, вставить максимальный элемент. 
-// Например, было 8 2 1 6 8 8 1 2 2 8 2. Стало 8 2 8 1 6 8 8 1 2 8 2 8 8 2 8 
+//Создать двусвязный список из целых чисел. 
+// Удалить все повторяющиеся элементы, оставив только их последние вхождения. 
+// Например, было 1 2 2 1 3 4 5 1 2 5 4 3 5. Стало 1 2 4 3 5.
 #include <iostream>
 using namespace std;
 
-
-struct list {//структура двусвязного списка
+struct list {
     int inf;
     list* next;
     list* prev;
 };
 
-list* find(list* h, int x) {
-    list* p = h;    //указатель на голову
-    while (p) {      //пока не дошли до конца списка
-        if (p->inf == x) break; //если нашли, прекращаем цикл
-        p = p->next;    //переход к следующему элементу
-    }
-    return p;    //возвращаем указатель
-}
-
-//функция добавления элемента в конец списка
 void push(list*& h, list*& t, int x) {
     list* r = new list;
     r->inf = x;
     r->next = NULL;
     if (!h && !t) { //если список пуст
         r->prev = NULL;
-        h = r; //новый элемент становится головой
+        h = r;
     }
     else {
         t->next = r;
         r->prev = t;
     }
-    t = r; //новый элемент становится хвостом
+    t = r;
 }
 
-//функция печати списка
 void print(list* h) {
     list* p = h;
     while (p) {
@@ -45,53 +34,56 @@ void print(list* h) {
     cout << endl;
 }
 
-int find_max(list* h) {//функция поиска максимального элемента в списке
-    if (!h) return 0; //если список пуст
-    int max_val = h->inf;
-    list* p = h->next;
-    while (p) {
-        if (p->inf > max_val) {
-            max_val = p->inf;
-        }
-        p = p->next;
+
+void delete_node(list*& h, list*& t, list* node) {//функция удаления узла из списка
+
+    if (node == h && node == t) { //единственный элемент
+        h = t = NULL;
     }
-    return max_val;
+    else if (node == h) { //удаляем голову
+        h = h->next;
+        h->prev = NULL;
+    }
+    else if (node == t) { //удаляем хвост
+        t = t->prev;
+        t->next = NULL;
+    }
+    else { //удаление из середины
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+    delete node;
 }
 
-void insert_after(list*& h, list*& t, list* r, int y) {//функция вставки элемента после указанного
-    list* p = new list;
-    p->inf = y;
-    if (r == t) { //если вставляем после хвоста
-        p->next = NULL;
-        p->prev = r;
-        r->next = p;
-        t = p; //новый элемент становится хвостом
+bool is_last(list* node) {//флаг для проверки является ли текущий элемент последним вхождением
+    if (!node) return false;
+    int val = node->inf;//запоминаем значение
+    list* current = node->next;
+    while (current) {
+        if (current->inf == val) {
+            return false;
+        }
+        current = current->next;
     }
-    else { //вставка в середину списка
-        r->next->prev = p;
-        p->next = r->next;
-        p->prev = r;
-        r->next = p;
-    }
+    return true;
 }
 
 void result(list*& h, list*& t) {
-    if (!h) return;
+    if (!h || !h->next) return; //если список пуст или содержит 1 элемент
 
-    int last_val = t->inf;// значение последнего элемента
-    int max_val = find_max(h);
+    list* current = h;
+    while (current) {
+        list* next_node = current->next; //сохраняем следующий узел перед возможным удалением
 
-    list* p = h;
-    while (p) {
-        list* found = find(p, last_val); //ищем следующий элемент, равный последнему
-        if (!found) break; //если не нашли, выходим
+        if (!is_last(current)) {
+            delete_node(h, t, current);
+        }
 
-        insert_after(h, t, found, max_val);
-        p = found->next->next; //перескакиваем через вставленный элемент
+        current = next_node;
     }
 }
 
-void del_list(list*& h, list*& t) {//функция удаления списка (очистка памяти)
+void del_list(list*& h, list*& t) {//функция удаления списка
     while (h) {
         list* p = h;
         h = h->next;
@@ -113,12 +105,13 @@ int main() {
     cout << "elements: ";
     for (int i = 0; i < n; ++i) {
         cin >> a[i]; 
-        push(head, tail, a[i]);
+        push(head, tail, a[i]); 
     }
     result(head, tail);
 
     cout << "res: ";
     print(head);
+
 
     del_list(head, tail);
 
