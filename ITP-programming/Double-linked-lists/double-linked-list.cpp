@@ -1,8 +1,9 @@
-//Создать двусвязный список из целых чисел. 
-// Удалить все повторяющиеся элементы, оставив только их последние вхождения. 
-// Например, было 1 2 2 1 3 4 5 1 2 5 4 3 5. Стало 1 2 4 3 5.
+//Создать двусвязный список, содержащий целые числа. 
+// Удалить лишние элементы так, чтобы каждый элемент был не больше среднего арифметического всех элементов, следующих за ним. 
+// Например, для списка 5 2 9 1 3 7 1 2 9, результат должен быть 2 1 3 1 2 9.
 #include <iostream>
 using namespace std;
+
 
 struct list {
     int inf;
@@ -10,11 +11,12 @@ struct list {
     list* prev;
 };
 
+//вставка элемента в конец списка
 void push(list*& h, list*& t, int x) {
     list* r = new list;
     r->inf = x;
     r->next = NULL;
-    if (!h && !t) { //если список пуст
+    if (!h && !t) {
         r->prev = NULL;
         h = r;
     }
@@ -24,6 +26,7 @@ void push(list*& h, list*& t, int x) {
     }
     t = r;
 }
+
 
 void print(list* h) {
     list* p = h;
@@ -35,55 +38,64 @@ void print(list* h) {
 }
 
 
-void delete_node(list*& h, list*& t, list* node) {//функция удаления узла из списка
+void del_node(list*& h, list*& t, list* r) {//функция для удаления элемента
+    if (!r) return;
 
-    if (node == h && node == t) { //единственный элемент
+    if (r == h && r == t) {//единственный элемент списка
         h = t = NULL;
     }
-    else if (node == h) { //удаляем голову
-        h = h->next;
+    else if (r == h) {//удаляем голову списка
+        h = h->next;//сдвигаем голову
         h->prev = NULL;
     }
-    else if (node == t) { //удаляем хвост
-        t = t->prev;
+    else if (r == t) {//удаляем хвост списка
+        t = t->prev;//сдвигаем хвост
         t->next = NULL;
     }
-    else { //удаление из середины
-        node->prev->next = node->next;
-        node->next->prev = node->prev;
+    else {
+        r->next->prev = r->prev;//для следующего от r предыдущим становится r->prev
+        r->prev->next = r->next;//для предыдущего от r следующим становится r->next
     }
-    delete node;
+    delete r;//удаляем r
 }
 
-bool is_last(list* node) {//флаг для проверки является ли текущий элемент последним вхождением
-    if (!node) return false;
-    int val = node->inf;//запоминаем значение
-    list* current = node->next;
-    while (current) {
-        if (current->inf == val) {
-            return false;
-        }
-        current = current->next;
+
+int calc_avg(list* node) {//функция для среднего арифмитического
+    if (!node || !node->next) return 0;
+
+    int sum = 0;
+    int count = 0;
+    list* p = node->next;
+
+    while (p) {
+        sum += p->inf;
+        count++;
+        p = p->next;
     }
-    return true;
+
+    return sum / count;
 }
+
 
 void result(list*& h, list*& t) {
-    if (!h || !h->next) return; //если список пуст или содержит 1 элемент
+    if (!h || !h->next) return;
 
     list* current = h;
     while (current) {
-        list* next_node = current->next; //сохраняем следующий узел перед возможным удалением
+        list* next_node = current->next;//сохраняем ссылку на следующий элемент
 
-        if (!is_last(current)) {
-            delete_node(h, t, current);
+        int avg = calc_avg(current);
+
+        if (current->next && current->inf > avg) {
+            del_node(h, t, current);
         }
 
         current = next_node;
     }
 }
 
-void del_list(list*& h, list*& t) {//функция удаления списка
+
+void del_list(list*& h, list*& t) {
     while (h) {
         list* p = h;
         h = h->next;
@@ -100,18 +112,16 @@ int main() {
     cout << "n: ";
     cin >> n;
 
-    int* a = new int[n]; 
-
     cout << "elements: ";
     for (int i = 0; i < n; ++i) {
-        cin >> a[i]; 
-        push(head, tail, a[i]); 
+        cin >> x;
+        push(head, tail, x);
     }
+
     result(head, tail);
 
     cout << "res: ";
     print(head);
-
 
     del_list(head, tail);
 
