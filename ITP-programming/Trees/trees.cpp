@@ -178,3 +178,146 @@ CONSOLE_SCREEN_BUFFER_INFO csbInfo;
 //
 //    return 0;
 //}
+
+//Дан список целых чисел. Построить дерево бинарного поиска. Вывести 
+// все листья дерева
+
+//struct tree {
+//    int inf;
+//    tree* left;
+//    tree* right;
+//    tree* parent;
+//};
+//
+////создание нового узла
+//tree* node(int x) {
+//    tree* n = new tree;
+//    n->inf = x;
+//    n->left = n->right = n->parent = NULL;
+//    return n;
+//}
+//
+////вставка элемента в дерево
+//void insert(tree*& tr, int x) {
+//    tree* n = node(x);
+//    if (!tr) tr = n; //если дерево пустое - корень
+//    else {
+//        tree* y = tr;
+//        while (y) { //ищем куда вставлять
+//            if (n->inf > y->inf) { //правая ветка
+//                if (y->right) y = y->right;
+//                else {
+//                    n->parent = y; //узел становится правым ребенком
+//                    y->right = n;
+//                    break;
+//                }
+//            }
+//            else if (n->inf < y->inf) { //левая ветка
+//                if (y->left) y = y->left;
+//                else {
+//                    n->parent = y; //узел становится левым ребенком
+//                    y->left = n;
+//                    break;
+//                }
+//            }
+//            else { //если элемент уже существует
+//                delete n;
+//                break;
+//            }
+//        }
+//    }
+//}
+//
+////функция для вывода листьев дерева
+//void printleaves(tree* tr) {
+//    if (tr) {
+//        if (!tr->left && !tr->right) { //если узел - лист
+//            cout << tr->inf << " ";
+//        }
+//        printleaves(tr->left); //рекурсивно обходим левое поддерево
+//        printleaves(tr->right); //рекурсивно обходим правое поддерево
+//    }
+//}
+//
+////функция для вычисления высоты дерева
+//void max_height(tree* x, short& max, short deepness = 1) {
+//    if (deepness > max) max = deepness;
+//    if (x->left) max_height(x->left, max, deepness + 1);
+//    if (x->right) max_height(x->right, max, deepness + 1);
+//}
+//
+////функция проверки размера консоли
+//bool isSizeOfConsoleCorrect(const short& width, const short& height) {
+//    GetConsoleScreenBufferInfo(outp, &csbInfo);
+//    COORD szOfConsole = csbInfo.dwSize;
+//    if (szOfConsole.X < width || szOfConsole.Y < height) {
+//        cout << "Please increase the size of the terminal. Size now: "
+//            << szOfConsole.X << "x" << szOfConsole.Y
+//            << ". Minimum required: " << width << "x" << height << ".\n";
+//        return false;
+//    }
+//    return true;
+//}
+//
+////вспомогательная функция для печати дерева
+//void print_helper(tree* x, const COORD pos, const short offset) {
+//    SetConsoleCursorPosition(outp, pos);
+//    cout << right << setw(offset + 1) << x->inf;
+//    if (x->left) print_helper(x->left, { pos.X, short(pos.Y + 1) }, offset >> 1);
+//    if (x->right) print_helper(x->right, { short(pos.X + offset), short(pos.Y + 1) }, offset >> 1);
+//}
+//
+////основная функция печати дерева
+//void printTree(tree* tr) {
+//    if (tr) {
+//        short max = 1;
+//        max_height(tr, max);
+//        short width = 1 << (max + 1);
+//        short max_w = 128;
+//        if (width > max_w) width = max_w;
+//
+//        while (!isSizeOfConsoleCorrect(width, max)) {
+//            system("pause");
+//        }
+//
+//        //резервируем место для вывода
+//        for (short i = 0; i < max; ++i) cout << '\n';
+//
+//        GetConsoleScreenBufferInfo(outp, &csbInfo);
+//        COORD endPos = csbInfo.dwCursorPosition;
+//
+//        //выводим дерево
+//        print_helper(tr, { 0, short(endPos.Y - max) }, width >> 1);
+//
+//        //возвращаем курсор в конец
+//        SetConsoleCursorPosition(outp, endPos);
+//    }
+//    else {
+//        cout << "The tree is empty." << endl;
+//    }
+//}
+//
+//int main() {
+//    tree* tr = NULL;
+//    int n, x;
+//
+//    cout << "n: ";
+//    cin >> n;
+//
+//    cout << "enter " << n << "elements: ";
+//    for (int i = 0; i < n; ++i) {
+//        cin >> x;
+//        insert(tr, x);
+//    }
+//
+//    //печатаем дерево
+//    cout << endl << "tree:" << endl;
+//    printTree(tr);
+//
+//    //выводим все листья
+//    cout << endl << "leaves: ";
+//    printleaves(tr);
+//    cout << endl;
+//
+//    return 0;
+//}
