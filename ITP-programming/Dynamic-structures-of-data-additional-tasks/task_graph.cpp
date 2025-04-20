@@ -80,6 +80,40 @@ void bfs(vector<vector<int>>& Gr, int N, int x) {//функция обхода �
     }
 }
 
+void dfs(vector<vector<int>>& Gr, int N, int x) {//функция обхода в глубину
+    stack* h = NULL;
+    vector<int> a(N, 0);
+
+    a[x] = 1;
+    push(h, x);
+    cout << x << " ";
+
+    while (h) {
+        int current = h->inf;
+        bool found = false;
+
+        for (size_t i = 0; i < Gr[current].size(); ++i) {
+            int neighbor = Gr[current][i];
+            if (a[neighbor] == 0) {
+                a[neighbor] = 1;
+                push(h, neighbor);
+                cout << neighbor << " ";
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            pop(h);
+        }
+    }
+    for (int i = 0; i < N; ++i) {
+        if (a[i] == 0) {
+            dfs(Gr, N, i);
+        }
+    }
+}
+
 
 vector<int> parse(string& line) {
     vector<int> numbers;
@@ -125,6 +159,8 @@ int main() {
     cout << "результат обхода в ширину: ";
     bfs(Gr, N, start);
     cout << endl;
+    cout << "результат обхода в глубину: ";
+    dfs(Gr, N, start);
     cout << endl;
 
     return 0;
