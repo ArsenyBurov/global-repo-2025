@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ThirdActivity">
+
+    <ImageView
+        android:id="@+id/photoView"
+        android:layout_width="414dp"
+        android:layout_height="232dp"
+        android:layout_marginTop="60dp"
+        android:contentDescription="Фото набережной"
+        android:scaleType="centerCrop"
+        android:src="@drawable/naberezhnaya"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Добавленный TextView для описания фото -->
+
+    <TextView
+        android:id="@+id/photoDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:text="Протянулась вдоль Волги на 4 км, от автодорожного моста до ул. 2-я Садовая, имеет 4 яруса. Строительство современной набережной было начато в кон.50-х г.г. 20 в. Свое название получила в честь приземления первого космонавта планеты Ю. А. Гагарина неподалёку от Саратова."
+        android:textSize="16sp"
+        android:textColor="#000"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photoView" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Вернуться"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photoDescription"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
