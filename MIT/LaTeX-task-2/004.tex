@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage[12pt]{extsizes}
+\usepackage{fancyvrb}
+\usepackage{indentfirst}
+\usepackage[
+  left=2cm, right=2cm, top=2cm, bottom=2cm, headsep=0.2cm, footskip=0.6cm, bindingoffset=0cm
+]{geometry}
+\usepackage[english,russian]{babel}
+
+\begin{document}
+\section*{Вариант 4}
+
+Тогда математическое ожидание оценки функции оценки перспектив будет равно
+\begin{equation*}
+  E_0\left(u\left(\frac{\Lambda_T}{\Lambda_0}\left(S_T - X\right)\right)\right)=\int\,u\left(\frac{\Lambda_T}{\Lambda_0}\left(S_T - X\right)\right)df\left(\Lambda_T, S_T\right) ,
+\end{equation*}
+где $S_T$ и $\Lambda_T$ есть решение предыдущего уравнения. Имеем
+\begin{equation}
+  \label{eq:ln}
+  \ln\Lambda_T = \ln\Lambda_0 - \left(r + \frac{1}{2}\left(\frac{\mu - r}{\sigma}\right)^2\right)T - \frac{\mu - r}{\sigma}\sqrt{T}\varepsilon ,
+\end{equation}
+где $\varepsilon\sim N(0,1)$, $S_0$ "--- начальная стоимость портфеля. Тогда, используя \eqref{eq:ln}, получим 
+\begin{multline}
+  E_0\left(u\left(\frac{\Lambda_T}{\Lambda_0}\left(S_T - X\right)\right)\right)=
+  -\int\limits_{S_T = X}^{+\infty}\left(\frac{\Lambda_T\left(\varepsilon\right)}{\Lambda_0}\left(S_T\left(\varepsilon\right) - X\right)\right)^{\alpha}dw^+\left(1-F\left(\varepsilon\right)\right) - \\
+  -\lambda\int\limits_{S_T = -\infty}^{X}\left(\frac{\Lambda_T\left(\varepsilon\right)}{\Lambda_0}\left(X - S_T\left(\varepsilon\right)\right)\right)^{\beta}dw^-\left(F\left(\varepsilon\right)\right).
+\end{multline}
+
+\end{document}
